@@ -51,8 +51,8 @@ app.get("/jobs" , async(req : Request,res: Response)=>{
                 {company : {$regex : filterString , $options:'i'}}
             ]
         }).limit(6).skip(stIndex);
-        
-        res.status(200).json({data:allJobs , isNext , isPrev , total:totalCount})
+        const length:number = allJobs.length;
+        res.status(200).json({data:allJobs , isNext , isPrev, length , total:totalCount})
 
     } catch (error) {
         res.status(401).send("Error Occured");

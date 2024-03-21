@@ -15,7 +15,15 @@ app.use(cors())
 app.use(express.json()) // to get json data from body
 
 app.get("/" , (req:Request,res:Response) :void=>{
-    res.json({msg : "Hi from API"});
+    res.json({msg : "Hi from API" ,
+    
+    Routes : {
+        "/jobs" : "to get all the jobs",
+        "/admin/add" : "add a job",
+        "/admin/update" : "update existing one",
+        "/admin/delete" : "delete an entry"
+    }
+});
 })
 
 app.get("/jobs" , async(req : Request,res: Response)=>{

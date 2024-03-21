@@ -1,3 +1,4 @@
+//creating a interface for validating type
 export interface JobDescription{
     title : string;
     description : string;

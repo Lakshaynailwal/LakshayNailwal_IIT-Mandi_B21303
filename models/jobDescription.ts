@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { JobDescription } from "../interfaces/interface";
 
+//defining the schema for job model
 const jobSchema = new mongoose.Schema<JobDescription>({
     title:{
         type : String,
@@ -27,6 +28,7 @@ const jobSchema = new mongoose.Schema<JobDescription>({
     }
 })
 
+//defining the model for above schema
 const jobModel = mongoose.model<JobDescription>("jobDescription" , jobSchema);
 
 export default jobModel;

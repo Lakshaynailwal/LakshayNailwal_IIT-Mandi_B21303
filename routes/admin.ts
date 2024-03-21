@@ -1,36 +1,29 @@
 import express,{Response , Request} from "express";
 import { JobDescription } from "../interfaces/interface";
 import jobModel from "../models/jobDescription";
-const router = express.Router();
 
-// router.get("/jobs" , async(req:Request , res:Response)=>{
-//     try {
-//         const allJobs = await jobModel.find();
-//         res.status(200).json({data : allJobs});
-//     } catch (error) {
-//         console.log(error);
-//         res.json({msg : "Something Wrong!"})
-//     }
-// })
+// handling diffrent routes for admin
+const router = express.Router(); 
 
-router.post("/add" , async(req:Request,res : Response)=>{
-    
+router.post("/add" , async(req:Request,res : Response) =>{
+    // job adding route
     try {
-        
+
+        //getting the data from frontend
         const data : JobDescription = {
-            title : req.body.title,
-            description : req.body.description,
-            stipend : parseInt(req.body.stipend),
-            company : req.body.company,
-            location : req.body.location,
-            jobIcon : req.body.jobIcon
+            title : req.body.title as string,
+            description : req.body.description as string,
+            stipend : req.body.stipend as number,
+            company : req.body.company as string,
+            location : req.body.location as string,
+            jobIcon : req.body.jobIcon as string
         };
+        // creating a new job
         const response = new jobModel(data);
+        //saving in DB
         await response.save();
-        if(response){
-            return res.status(200).json({msg : "Added Succesfully"});
-        }
-        res.json({msg : "Something Wrong!"});
+
+        res.status(200).json({msg : "Added Succesfully"});
 
     } catch (error) {
         console.log(error);
@@ -40,27 +33,23 @@ router.post("/add" , async(req:Request,res : Response)=>{
 })
 
 router.post("/update" , async(req : Request,res : Response)=>{
-
+    // handling the update request based on id filter
     try {
+        //extracting the id from body as string
         const _id:string = req.body._id ? (req.body._id as string) :"";
+
         if(_id === ""){
             return res.json({msg : "Something wrong!"})
         }
-        const data : JobDescription = {
-            title : req.body.title,
-            description : req.body.description,
-            stipend : req.body.stipend,
-            company : req.body.company,
-            location : req.body.location,
-            jobIcon : req.body.jobIcon
-        };
+
+        //extrating the data and update it for the given id
         await jobModel.findOneAndUpdate({_id} , {$set : {
-            title:data.title,
-            description:data.description,
-            stipend:data.stipend,
-            location:data.location,
-            iobIcon:data.jobIcon,
-            company:data.company
+            title:req.body.title as string,
+            description:req.body.description as string,
+            stipend:req.body.stipend as number,
+            location:req.body.location as string,
+            iobIcon:req.body.jobIcon as string,
+            company:req.body.company as string
         }})
         res.status(200).json({msg : "Updated Succesfully " })
         
@@ -73,8 +62,15 @@ router.post("/update" , async(req : Request,res : Response)=>{
 
 router.post("/delete" , async(req:Request , res:Response)=>{
 
+    //handling the delete route based on id
     try {
+        //extracting the id
         const _id:string = req.body._id ? (req.body._id as string) :"";
+        if(_id === ""){
+            return res.status(200).json({msg : "does not exist"})
+        }
+        
+        //deleting based on id
         await jobModel.findOneAndDelete({_id});
         res.status(200).json({msg : "Deleted Successfully"});
 

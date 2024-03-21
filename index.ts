@@ -59,3 +59,6 @@ app.use("/admin" , router);
 app.listen(Port , ():void=>{
     console.log("Running...");
 });
+
+
+export default app;

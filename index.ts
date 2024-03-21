@@ -14,6 +14,10 @@ connection();
 app.use(cors())
 app.use(express.json()) // to get json data from body
 
+app.get("/" , (req:Request,res:Response) :void=>{
+    res.json({msg : "Hi from API"});
+})
+
 app.get("/jobs" , async(req : Request,res: Response)=>{
     try {
 
@@ -55,5 +59,3 @@ app.use("/admin" , router);
 app.listen(Port , ():void=>{
     console.log("Running...");
 });
-
-module.exports = app;

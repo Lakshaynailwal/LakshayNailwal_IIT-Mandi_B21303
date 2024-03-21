@@ -30,7 +30,8 @@ app.get("/jobs" , async(req : Request,res: Response)=>{
     try {
 
         //pagination
-        const page:number = req.query.page ? parseInt(req.query.page as string) : 1;
+        let page:number = req.query.page ? parseInt(req.query.page as string) : 1;
+        page = page<=0? 1 :page;
         //setting indexes for limiting
         const stIndex : number = (page-1)*6;
         const edIndex : number = page*6;

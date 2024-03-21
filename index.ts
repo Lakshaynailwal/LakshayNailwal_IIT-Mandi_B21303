@@ -34,15 +34,21 @@ app.get("/jobs" , async(req : Request,res: Response)=>{
         //setting indexes for limiting
         const stIndex : number = (page-1)*6;
         const edIndex : number = page*6;
+        // searching via filter string 
+        const filterString :string = req.query.filter ? (req.query.filter as string) : "";
         //Total no of jobs
-        const totalCount : number = await jobModel.countDocuments({});
+        const totalCount : number = await jobModel.countDocuments({
+            $or :[
+                {title : {$regex : filterString , $options:'i'}},
+                {location : {$regex : filterString , $options:'i'}},
+                {company : {$regex : filterString , $options:'i'}}
+            ]
+        });
         // Forward and Previous controls
         const isNext: boolean = edIndex < totalCount ? true : false;
         const isPrev: boolean = stIndex > 0 ? true : false;
         
         //searching
-        const filterString :string = req.query.filter ? (req.query.filter as string) : "";
-        // searching via filter string 
         // checking case insensitive checking in title location and company
         const allJobs = await jobModel.find({
         $or: [
